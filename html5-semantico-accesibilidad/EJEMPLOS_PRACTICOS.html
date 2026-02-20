@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ejemplos Prácticos: HTML5 Semántico y ARIA</title>
+  <style>
+    /* Estilos base para accesibilidad */
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+      color: #333;
+    }
+    
+    /* Skip Link */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: #000;
+      color: #fff;
+      padding: 8px;
+      text-decoration: none;
+      z-index: 100;
+    }
+    
+    .skip-link:focus {
+      top: 0;
+    }
+    
+    /* Foco visible */
+    *:focus {
+      outline: 3px solid #005fcc;
+      outline-offset: 2px;
+    }
+    
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid #005fcc;
+      outline-offset: 2px;
+    }
+    
+    /* Estructura de landmarks */
+    header[role="banner"],
+    header:not(article header):not(section header) {
+      background: #f5f5f5;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    nav {
+      background: #e0e0e0;
+      padding: 0.5rem 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 1rem;
+    }
+    
+    nav a {
+      color: #333;
+      text-decoration: none;
+      padding: 0.5rem;
+    }
+    
+    nav a:hover,
+    nav a:focus {
+      text-decoration: underline;
+    }
+    
+    nav a[aria-current="page"] {
+      font-weight: bold;
+      border-bottom: 2px solid #333;
+    }
+    
+    main {
+      padding: 1rem 0;
+    }
+    
+    aside {
+      background: #f9f9f9;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    
+    footer {
+      background: #333;
+      color: #fff;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    
+    footer a {
+      color: #fff;
+    }
+    
+    /* Componentes */
+    .example-section {
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    .example-section h2 {
+      margin-top: 0;
+      color: #005fcc;
+    }
+    
+    /* Tabs accesibles */
+    .tabs {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    
+    [role="tablist"] {
+      display: flex;
+      border-bottom: 1px solid #ccc;
+      background: #f5f5f5;
+    }
+    
+    [role="tab"] {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+    }
+    
+    [role="tab"][aria-selected="true"] {
+      border-bottom-color: #005fcc;
+      font-weight: bold;
+      background: #fff;
+    }
+    
+    [role="tabpanel"] {
+      padding: 1rem;
+    }
+    
+    [role="tabpanel"][hidden] {
+      display: none;
+    }
+    
+    /* Acordeón */
+    .accordion-item {
+      border: 1px solid #ccc;
+      margin-bottom: 0.5rem;
+      border-radius: 4px;
+    }
+    
+    .accordion-trigger {
+      width: 100%;
+      padding: 1rem;
+      text-align: left;
+      background: #f5f5f5;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .accordion-trigger[aria-expanded="true"] {
+      background: #e0e0e0;
+    }
+    
+    .accordion-icon {
+      transition: transform 0.2s;
+    }
+    
+    .accordion-trigger[aria-expanded="true"] .accordion-icon {
+      transform: rotate(180deg);
+    }
+    
+    .accordion-panel {
+      padding: 1rem;
+    }
+    
+    .accordion-panel[hidden] {
+      display: none;
+    }
+    
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    
+    .modal-overlay[hidden] {
+      display: none;
+    }
+    
+    [role="dialog"] {
+      background: #fff;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow: auto;
+    }
+    
+    .modal-header {
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .modal-body {
+      padding: 1rem;
+    }
+    
+    .modal-footer {
+      padding: 1rem;
+      border-top: 1px solid #eee;
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+    
+    /* Alertas */
+    [role="alert"] {
+      padding: 1rem;
+      border-radius: 4px;
+      margin: 1rem 0;
+    }
+    
+    .alert-error {
+      background: #fee;
+      border: 1px solid #fcc;
+      color: #c00;
+    }
+    
+    .alert-success {
+      background: #efe;
+      border: 1px solid #cfc;
+      color: #0c0;
+    }
+    
+    .alert-info {
+      background: #eef;
+      border: 1px solid #ccf;
+      color: #00c;
+    }
+    
+    /* Formularios */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    
+    input[aria-invalid="true"] {
+      border-color: #c00;
+    }
+    
+    .error-message {
+      color: #c00;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+    
+    .help-text {
+      color: #666;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+    
+    fieldset {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    
+    legend {
+      font-weight: bold;
+      padding: 0 0.5rem;
+    }
+    
+    /* Tablas */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    
+    caption {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      text-align: left;
+    }
+    
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+      background: #f5f5f5;
+      font-weight: bold;
+    }
+    
+    /* Botones */
+    button {
+      padding: 0.5rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #f5f5f5;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    
+    button:hover {
+      background: #e0e0e0;
+    }
+    
+    button[aria-pressed="true"] {
+      background: #005fcc;
+      color: #fff;
+      border-color: #005fcc;
+    }
+    
+    .btn-primary {
+      background: #005fcc;
+      color: #fff;
+      border-color: #005fcc;
+    }
+    
+    .btn-primary:hover {
+      background: #004499;
+    }
+    
+    .btn-danger {
+      background: #cc0000;
+      color: #fff;
+      border-color: #cc0000;
+    }
+    
+    .btn-danger:hover {
+      background: #990000;
+    }
+    
+    /* Tree view */
+    [role="tree"] {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    [role="tree"] ul {
+      list-style: none;
+      padding-left: 1.5rem;
+    }
+    
+    [role="treeitem"] {
+      padding: 0.25rem 0;
+    }
+    
+    [role="treeitem"][aria-selected="true"] {
+      background: #e6f2ff;
+    }
+    
+    .tree-toggle {
+      cursor: pointer;
+      margin-right: 0.25rem;
+    }
+    
+    /* Menú desplegable */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      min-width: 200px;
+      z-index: 100;
+    }
+    
+    .dropdown-menu[hidden] {
+      display: none;
+    }
+    
+    [role="menuitem"] {
+      display: block;
+      width: 100%;
+      padding: 0.5rem 1rem;
+      text-align: left;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    
+    [role="menuitem"]:hover,
+    [role="menuitem"]:focus {
+      background: #f5f5f5;
+    }
+    
+    /* Toast notifications */
+    .toast-container {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1000;
+    }
+    
+    .toast {
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    
+    /* Breadcrumbs */
+    nav[aria-label="Breadcrumb"] ol {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    nav[aria-label="Breadcrumb"] li:not(:last-child)::after {
+      content: "/";
+      margin: 0 0.5rem;
+      color: #666;
+    }
+    
+    nav[aria-label="Breadcrumb"] [aria-current="page"] {
+      color: #666;
+      text-decoration: none;
+      cursor: default;
+    }
+    
+    /* Visually hidden (solo para screen readers) */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Skip Link -->
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+  <!-- Landmark: Banner -->
+  <header>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h1>HTML5 Semántico + ARIA</h1>
+      <search>
+        <form role="search" onsubmit="event.preventDefault(); alert('Buscando: ' + this.q.value);">
+          <label for="busqueda-global" class="visually-hidden">Buscar en el sitio:</label>
+          <input type="search" id="busqueda-global" name="q" placeholder="Buscar...">
+          <button type="submit">Buscar</button>
+        </form>
+      </search>
+    </div>
+  </header>
+
+  <!-- Landmark: Navigation -->
+  <nav aria-label="Navegación principal">
+    <ul>
+      <li><a href="#landmarks" aria-current="page">Landmarks</a></li>
+      <li><a href="#tabs">Tabs</a></li>
+      <li><a href="#accordion">Acordeón</a></li>
+      <li><a href="#modal">Modal</a></li>
+      <li><a href="#forms">Formularios</a></li>
+      <li><a href="#tables">Tablas</a></li>
+      <li><a href="#tree">Tree</a></li>
+    </ul>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <nav aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/accesibilidad">Accesibilidad</a></li>
+      <li><a href="/html5-semantico" aria-current="page">HTML5 Semántico</a></li>
+    </ol>
+  </nav>
+
+  <!-- Landmark: Main -->
+  <main id="main-content">
+    <h1>Ejemplos Prácticos de Accesibilidad</h1>
+    <p>Este documento demuestra las mejores prácticas de HTML5 semántico y ARIA.</p>
+
+    <!-- Ejemplo 1: Landmarks -->
+    <section id="landmarks" class="example-section" aria-labelledby="landmarks-title">
+      <h2 id="landmarks-title">1. Landmarks Semánticos</h2>
+      <p>La página actual demuestra el uso correcto de landmarks:</p>
+      <ul>
+        <li><code>&lt;header&gt;</code> → <code>banner</code></li>
+        <li><code>&lt;nav&gt;</code> → <code>navigation</code></li>
+        <li><code>&lt;main&gt;</code> → <code>main</code></li>
+        <li><code>&lt;aside&gt;</code> → <code>complementary</code></li>
+        <li><code>&lt;footer&gt;</code> → <code>contentinfo</code></li>
+        <li><code>&lt;search&gt;</code> → <code>search</code></li>
+      </ul>
+      
+      <!-- Region con nombre -->
+      <section aria-labelledby="region-ejemplo">
+        <h3 id="region-ejemplo">Ejemplo de Región</h3>
+        <p>Este <code>&lt;section&gt;</code> tiene un <code>aria-labelledby</code> que lo convierte en una región navegable.</p>
+      </section>
+    </section>
+
+    <!-- Ejemplo 2: Tabs -->
+    <section id="tabs" class="example-section" aria-labelledby="tabs-title">
+      <h2 id="tabs-title">2. Tabs Accesibles</h2>
+      <div class="tabs">
+        <div role="tablist" aria-label="Información del producto">
+          <button role="tab" 
+                  id="tab-descripcion"
+                  aria-selected="true" 
+                  aria-controls="panel-descripcion"
+                  onclick="switchTab(this)">
+            Descripción
+          </button>
+          <button role="tab" 
+                  id="tab-especificaciones"
+                  aria-selected="false" 
+                  aria-controls="panel-especificaciones"
+                  tabindex="-1"
+                  onclick="switchTab(this)">
+            Especificaciones
+          </button>
+          <button role="tab" 
+                  id="tab-opiniones"
+                  aria-selected="false" 
+                  aria-controls="panel-opiniones"
+                  tabindex="-1"
+                  onclick="switchTab(this)">
+            Opiniones
+          </button>
+        </div>
+        
+        <div role="tabpanel" id="panel-descripcion" aria-labelledby="tab-descripcion">
+          <h3>Descripción del Producto</h3>
+          <p>Este es el panel de descripción. Implementado con roles ARIA y navegación por teclado.</p>
+        </div>
+        
+        <div role="tabpanel" id="panel-especificaciones" aria-labelledby="tab-especificaciones" hidden>
+          <h3>Especificaciones Técnicas</h3>
+          <ul>
+            <li>Dimensiones: 20x30cm</li>
+            <li>Peso: 500g</li>
+            <li>Material: Aluminio</li>
+          </ul>
+        </div>
+        
+        <div role="tabpanel" id="panel-opiniones" aria-labelledby="tab-opiniones" hidden>
+          <h3>Opiniones de Clientes</h3>
+          <p>⭐⭐⭐⭐⭐ - "Excelente producto, muy recomendado."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ejemplo 3: Acordeón -->
+    <section id="accordion" class="example-section" aria-labelledby="accordion-title">
+      <h2 id="accordion-title">3. Acordeón Accesible</h2>
+      
+      <div class="accordion-item">
+        <h3>
+          <button type="button" 
+                  class="accordion-trigger"
+                  aria-expanded="false"
+                  aria-controls="accordion-1"
+                  onclick="toggleAccordion(this)">
+            <span>¿Qué es HTML5 Semántico?</span>
+            <span class="accordion-icon" aria-hidden="true">▼</span>
+          </button>
+        </h3>
+        <div id="accordion-1" class="accordion-panel" hidden>
+          <p>HTML5 semántico utiliza elementos que describen claramente su significado tanto para el navegador como para el desarrollador. Ejemplos: <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;article&gt;</code>, etc.</p>
+        </div>
+      </div>
+      
+      <div class="accordion-item">
+        <h3>
+          <button type="button" 
+                  class="accordion-trigger"
+                  aria-expanded="false"
+                  aria-controls="accordion-2"
+                  onclick="toggleAccordion(this)">
+            <span>¿Cuándo usar ARIA?</span>
+            <span class="accordion-icon" aria-hidden="true">▼</span>
+          </button>
+        </h3>
+        <div id="accordion-2" class="accordion-panel" hidden>
+          <p>ARIA debe usarse cuando no existe un elemento HTML nativo para el componente que estás construyendo, o cuando necesitas mejorar la accesibilidad de elementos complejos como tabs, modales, o árboles de navegación.</p>
+        </div>
+      </div>
+      
+      <div class="accordion-item">
+        <h3>
+          <button type="button" 
+                  class="accordion-trigger"
+                  aria-expanded="false"
+                  aria-controls="accordion-3"
+                  onclick="toggleAccordion(this)">
+            <span>¿Qué son los Landmarks?</span>
+            <span class="accordion-icon" aria-hidden="true">▼</span>
+          </button>
+        </h3>
+        <div id="accordion-3" class="accordion-panel" hidden>
+          <p>Los landmarks son regiones de la página que ayudan a los usuarios de lectores de pantalla a navegar rápidamente entre secciones importantes como el encabezado, navegación, contenido principal y pie de página.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ejemplo 4: Modal -->
+    <section id="modal" class="example-section" aria-labelledby="modal-title">
+      <h2 id="modal-title">4. Modal Accesible</h2>
+      <button type="button" class="btn-primary" onclick="openModal()">
+        Abrir Modal de Confirmación
+      </button>
+      
+      <!-- Modal -->
+      <div class="modal-overlay" id="modal-overlay" hidden>
+        <div role="dialog" 
+             aria-modal="true"
+             aria-labelledby="modal-heading"
+             aria-describedby="modal-desc">
+          <div role="document">
+            <div class="modal-header">
+              <h2 id="modal-heading">Confirmar Acción</h2>
+              <button type="button" 
+                      aria-label="Cerrar modal"
+                      onclick="closeModal()">
+                ✕
+              </button>
+            </div>
+            <div class="modal-body">
+              <p id="modal-desc">
+                ¿Está seguro de que desea eliminar este elemento? Esta acción no se puede deshacer.
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" onclick="closeModal()">Cancelar</button>
+              <button type="button" class="btn-danger" onclick="confirmDelete()">
+                Sí, eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ejemplo 5: Formularios -->
+    <section id="forms" class="example-section" aria-labelledby="forms-title">
+      <h2 id="forms-title">5. Formularios Accesibles</h2>
+      
+      <form onsubmit="event.preventDefault(); showToast('Formulario enviado correctamente', 'success');">
+        <!-- Grupo con fieldset -->
+        <fieldset>
+          <legend>Información Personal</legend>
+          
+          <div class="form-group">
+            <label for="nombre-completo">Nombre completo: <span aria-label="requerido">*</span></label>
+            <input type="text" 
+                   id="nombre-completo" 
+                   name="nombre"
+                   required
+                   aria-required="true">
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Correo electrónico: <span aria-label="requerido">*</span></label>
+            <input type="email" 
+                   id="email" 
+                   name="email"
+                   required
+                   aria-required="true"
+                   aria-describedby="email-help"
+                   onblur="validateEmail(this)">
+            <div id="email-help" class="help-text">Usaremos tu correo para enviarte actualizaciones.</div>
+            <div id="email-error" class="error-message" role="alert" hidden></div>
+          </div>
+        </fieldset>
+        
+        <!-- Checkbox group -->
+        <fieldset>
+          <legend>Preferencias</legend>
+          <div class="form-group">
+            <input type="checkbox" id="newsletter" name="newsletter">
+            <label for="newsletter">Suscribirse al boletín mensual</label>
+          </div>
+          <div class="form-group">
+            <input type="checkbox" id="terms" name="terms" required>
+            <label for="terms">Acepto los <a href="/terminos">términos y condiciones</a></label>
+          </div>
+        </fieldset>
+        
+        <!-- Radio group -->
+        <fieldset>
+          <legend>Método de contacto preferido</legend>
+          <div class="form-group">
+            <input type="radio" id="contact-email" name="contact-method" value="email" checked>
+            <label for="contact-email">Correo electrónico</label>
+          </div>
+          <div class="form-group">
+            <input type="radio" id="contact-phone" name="contact-method" value="phone">
+            <label for="contact-phone">Teléfono</label>
+          </div>
+          <div class="form-group">
+            <input type="radio" id="contact-none" name="contact-method" value="none">
+            <label for="contact-none">No contactar</label>
+          </div>
+        </fieldset>
+        
+        <!-- Select con optgroup -->
+        <div class="form-group">
+          <label for="pais">País:</label>
+          <select id="pais" name="pais">
+            <optgroup label="América">
+              <option value="mx">México</option>
+              <option value="ar">Argentina</option>
+              <option value="co">Colombia</option>
+            </optgroup>
+            <optgroup label="Europa">
+              <option value="es">España</option>
+              <option value="fr">Francia</option>
+            </optgroup>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <button type="submit" class="btn-primary">Enviar Registro</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Ejemplo 6: Tablas -->
+    <section id="tables" class="example-section" aria-labelledby="tables-title">
+      <h2 id="tables-title">6. Tablas de Datos Accesibles</h2>
+      
+      <!-- Tabla simple -->
+      <table>
+        <caption>Productos Disponibles</caption>
+        <thead>
+          <tr>
+            <th scope="col">Producto</th>
+            <th scope="col">Categoría</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Disponibilidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Laptop Pro X1</th>
+            <td>Computadoras</td>
+            <td>$1,299</td>
+            <td>En stock</td>
+          </tr>
+          <tr>
+            <th scope="row">Monitor 4K Ultra</th>
+            <td>Periféricos</td>
+            <td>$599</td>
+            <td>Agotado</td>
+          </tr>
+          <tr>
+            <th scope="row">Teclado Mecánico RGB</th>
+            <td>Accesorios</td>
+            <td>$149</td>
+            <td>En stock</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <!-- Tabla compleja con headers -->
+      <table>
+        <caption>Ventas por Región y Trimestre (2024)</caption>
+        <thead>
+          <tr>
+            <td></td>
+            <th id="q1" scope="col">Q1</th>
+            <th id="q2" scope="col">Q2</th>
+            <th id="q3" scope="col">Q3</th>
+            <th id="q4" scope="col">Q4</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th id="norte" scope="row">Norte</th>
+            <td headers="norte q1">$50,000</td>
+            <td headers="norte q2">$55,000</td>
+            <td headers="norte q3">$60,000</td>
+            <td headers="norte q4">$65,000</td>
+          </tr>
+          <tr>
+            <th id="sur" scope="row">Sur</th>
+            <td headers="sur q1">$30,000</td>
+            <td headers="sur q2">$32,000</td>
+            <td headers="sur q3">$35,000</td>
+            <td headers="sur q4">$38,000</td>
+          </tr>
+          <tr>
+            <th id="este" scope="row">Este</th>
+            <td headers="este q1">$45,000</td>
+            <td headers="este q2">$48,000</td>
+            <td headers="este q3">$52,000</td>
+            <td headers="este q4">$58,000</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Ejemplo 7: Tree View -->
+    <section id="tree" class="example-section" aria-labelledby="tree-title">
+      <h2 id="tree-title">7. Tree View Accesible</h2>
+      
+      <ul role="tree" aria-label="Estructura de carpetas">
+        <li role="treeitem" aria-expanded="true">
+          <span class="tree-toggle" onclick="toggleTree(this)">▼</span>
+          <span>Documentos</span>
+          <ul role="group">
+            <li role="treeitem">
+              <span>Trabajo</span>
+              <ul role="group">
+                <li role="treeitem" tabindex="-1">Proyecto A.pdf</li>
+                <li role="treeitem" tabindex="-1">Proyecto B.docx</li>
+              </ul>
+            </li>
+            <li role="treeitem" aria-expanded="false">
+              <span class="tree-toggle" onclick="toggleTree(this)">▶</span>
+              <span>Personal</span>
+              <ul role="group" hidden>
+                <li role="treeitem" tabindex="-1">Presupuesto.xlsx</li>
+                <li role="treeitem" tabindex="-1">Notas.txt</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li role="treeitem" aria-expanded="false">
+          <span class="tree-toggle" onclick="toggleTree(this)">▶</span>
+          <span>Imágenes</span>
+          <ul role="group" hidden>
+            <li role="treeitem" tabindex="-1">Vacaciones.jpg</li>
+            <li role="treeitem" tabindex="-1">Familia.png</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Ejemplo 8: Live Regions -->
+    <section id="live" class="example-section" aria-labelledby="live-title">
+      <h2 id="live-title">8. Live Regions (Regiones Vivas)</h2>
+      
+      <div role="status" aria-live="polite" aria-atomic="true" id="status-region">
+        <!-- Mensajes de estado -->
+      </div>
+      
+      <div role="alert" aria-live="assertive" aria-atomic="true" id="alert-region" hidden>
+        <!-- Alertas importantes -->
+      </div>
+      
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <button type="button" onclick="showToast('Operación completada', 'success')">
+          Mostrar Éxito (polite)
+        </button>
+        <button type="button" onclick="showAlert('¡Error de conexión!', 'error')">
+          Mostrar Alerta (assertive)
+        </button>
+        <button type="button" onclick="showToast('Cargando datos...', 'info')">
+          Mostrar Info
+        </button>
+      </div>
+    </section>
+
+    <!-- Ejemplo 9: Botones Toggle -->
+    <section id="toggle" class="example-section" aria-labelledby="toggle-title">
+      <h2 id="toggle-title">9. Botones Toggle</h2>
+      
+      <button type="button" 
+              aria-pressed="false"
+              onclick="toggleButton(this)"
+              aria-label="Activar modo oscuro">
+        🌙 Modo Oscuro
+      </button>
+      
+      <button type="button" 
+              aria-pressed="false"
+              onclick="toggleButton(this)"
+              aria-label="Activar notificaciones">
+        🔔 Notificaciones
+      </button>
+    </section>
+
+    <!-- Ejemplo 10: Dropdown Menu -->
+    <section id="dropdown" class="example-section" aria-labelledby="dropdown-title">
+      <h2 id="dropdown-title">10. Menú Desplegable Accesible</h2>
+      
+      <div class="dropdown">
+        <button type="button" 
+                id="menu-button"
+                aria-haspopup="true"
+                aria-expanded="false"
+                onclick="toggleMenu(this)">
+          Opciones de Usuario ▼
+        </button>
+        <div class="dropdown-menu" 
+             role="menu"
+             aria-labelledby="menu-button"
+             hidden>
+          <button role="menuitem" onclick="alert('Perfil')">Ver Perfil</button>
+          <button role="menuitem" onclick="alert('Configuración')">Configuración</button>
+          <button role="menuitem" onclick="alert('Cerrar sesión')">Cerrar Sesión</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ejemplo 11: Figure y Figcaption -->
+    <section id="figure" class="example-section" aria-labelledby="figure-title">
+      <h2 id="figure-title">11. Figuras con Leyendas</h2>
+      
+      <figure>
+        <img src="https://via.placeholder.com/400x200/005fcc/ffffff?text=Gráfico+de+Ejemplo" 
+             alt="Gráfico de barras mostrando crecimiento del 150% en ventas">
+        <figcaption>
+          Figura 1: Crecimiento anual de ventas comparado con el año anterior.
+        </figcaption>
+      </figure>
+      
+      <figure role="group" aria-labelledby="fig2-caption">
+        <img src="https://via.placeholder.com/400x200/00cc00/ffffff?text=Diagrama" 
+             alt="Diagrama de flujo del proceso de registro">
+        <figcaption id="fig2-caption">
+          <details>
+            <summary>Descripción detallada del diagrama</summary>
+            <p>El diagrama muestra el proceso de registro en 5 pasos:</p>
+            <ol>
+              <li>El usuario ingresa su correo electrónico</li>
+              <li>Se envía un enlace de verificación</li>
+              <li>El usuario confirma su correo</li>
+              <li>Se completa el perfil</li>
+              <li>Acceso concedido al sistema</li>
+            </ol>
+          </details>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- Ejemplo 12: Progress y Meter -->
+    <section id="progress" class="example-section" aria-labelledby="progress-title">
+      <h2 id="progress-title">12. Indicadores de Progreso</h2>
+      
+      <div class="form-group">
+        <label for="upload-progress">Subiendo archivo:</label>
+        <progress id="upload-progress" value="70" max="100" aria-label="Progreso de subida">
+          70%
+        </progress>
+      </div>
+      
+      <div class="form-group">
+        <label for="storage-meter">Almacenamiento utilizado:</label>
+        <meter id="storage-meter" 
+               value="75" 
+               min="0" 
+               max="100" 
+               low="30" 
+               high="80" 
+               optimum="20"
+               aria-label="75% de almacenamiento utilizado">
+          75%
+        </meter>
+        <span>75 GB de 100 GB</span>
+      </div>
+      
+      <div class="form-group">
+        <button type="button" onclick="simulateProgress()">Simular Progreso</button>
+        <div id="simulated-progress-container" style="margin-top: 1rem;"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Landmark: Complementary -->
+  <aside aria-label="Enlaces relacionados">
+    <h2>Recursos de Accesibilidad</h2>
+    <nav aria-label="Recursos externos">
+      <ul>
+        <li><a href="https://www.w3.org/WAI/">W3C Web Accessibility Initiative</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility">MDN ARIA Docs</a></li>
+        <li><a href="https://www.w3.org/WAI/ARIA/apg/">ARIA Authoring Practices</a></li>
+        <li><a href="https://webaim.org/">WebAIM</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Landmark: Contentinfo -->
+  <footer>
+    <nav aria-label="Navegación de pie de página">
+      <ul style="display: flex; gap: 1rem; list-style: none; padding: 0;">
+        <li><a href="/privacidad">Política de Privacidad</a></li>
+        <li><a href="/accesibilidad">Declaración de Accesibilidad</a></li>
+        <li><a href="/mapa">Mapa del Sitio</a></li>
+      </ul>
+    </nav>
+    <p>&copy; 2024 Ejemplos de Accesibilidad. Documento educativo.</p>
+  </footer>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container" role="region" aria-label="Notificaciones"></div>
+
+  <script>
+    // ===== FUNCIONES DE UTILIDAD =====
+    
+    // Mostrar Toast (notificación)
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast alert-${type}`;
+      toast.setAttribute('role', 'status');
+      toast.setAttribute('aria-live', 'polite');
+      toast.textContent = message;
+      
+      container.appendChild(toast);
+      
+      // Auto-remover después de 5 segundos
+      setTimeout(() => {
+        toast.remove();
+      }, 5000);
+    }
+    
+    // Mostrar Alert (notificación urgente)
+    function showAlert(message, type = 'error') {
+      const container = document.getElementById('alert-region');
+      container.className = `alert-${type}`;
+      container.textContent = message;
+      container.hidden = false;
+      
+      setTimeout(() => {
+        container.hidden = true;
+      }, 5000);
+    }
+
+    // ===== TABS =====
+    function switchTab(tab) {
+      const tablist = tab.parentElement;
+      const tabs = tablist.querySelectorAll('[role="tab"]');
+      const panels = tablist.parentElement.querySelectorAll('[role="tabpanel"]');
+      
+      // Desactivar todos los tabs
+      tabs.forEach(t => {
+        t.setAttribute('aria-selected', 'false');
+        t.setAttribute('tabindex', '-1');
+      });
+      
+      // Ocultar todos los panels
+      panels.forEach(p => p.hidden = true);
+      
+      // Activar el tab seleccionado
+      tab.setAttribute('aria-selected', 'true');
+      tab.setAttribute('tabindex', '0');
+      tab.focus();
+      
+      // Mostrar el panel correspondiente
+      const panelId = tab.getAttribute('aria-controls');
+      document.getElementById(panelId).hidden = false;
+    }
+    
+    // Navegación con teclado para tabs
+    document.querySelectorAll('[role="tablist"]').forEach(tablist => {
+      const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+      
+      tablist.addEventListener('keydown', (e) => {
+        const currentIndex = tabs.findIndex(t => t.getAttribute('aria-selected') === 'true');
+        let newIndex;
+        
+        switch(e.key) {
+          case 'ArrowLeft':
+          case 'ArrowUp':
+            newIndex = currentIndex > 0 ? currentIndex - 1 : tabs.length - 1;
+            switchTab(tabs[newIndex]);
+            e.preventDefault();
+            break;
+          case 'ArrowRight':
+          case 'ArrowDown':
+            newIndex = currentIndex < tabs.length - 1 ? currentIndex + 1 : 0;
+            switchTab(tabs[newIndex]);
+            e.preventDefault();
+            break;
+          case 'Home':
+            switchTab(tabs[0]);
+            e.preventDefault();
+            break;
+          case 'End':
+            switchTab(tabs[tabs.length - 1]);
+            e.preventDefault();
+            break;
+        }
+      });
+    });
+
+    // ===== ACORDEÓN =====
+    function toggleAccordion(button) {
+      const expanded = button.getAttribute('aria-expanded') === 'true';
+      const panelId = button.getAttribute('aria-controls');
+      const panel = document.getElementById(panelId);
+      
+      button.setAttribute('aria-expanded', !expanded);
+      panel.hidden = expanded;
+    }
+
+    // ===== MODAL =====
+    let lastFocusedElement;
+    
+    function openModal() {
+      lastFocusedElement = document.activeElement;
+      const modal = document.getElementById('modal-overlay');
+      modal.hidden = false;
+      
+      // Foco en el primer elemento interactivo del modal
+      const focusable = modal.querySelector('button, [href], input, select, textarea');
+      if (focusable) focusable.focus();
+      
+      // Cerrar con Escape
+      document.addEventListener('keydown', closeOnEscape);
+      
+      // Trampa de foco
+      modal.addEventListener('keydown', trapFocus);
+    }
+    
+    function closeModal() {
+      const modal = document.getElementById('modal-overlay');
+      modal.hidden = true;
+      document.removeEventListener('keydown', closeOnEscape);
+      modal.removeEventListener('keydown', trapFocus);
+      
+      // Devolver foco
+      if (lastFocusedElement) lastFocusedElement.focus();
+    }
+    
+    function closeOnEscape(e) {
+      if (e.key === 'Escape') closeModal();
+    }
+    
+    function trapFocus(e) {
+      const modal = document.getElementById('modal-overlay');
+      const focusable = modal.querySelectorAll('button, [href], input, select, textarea');
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      
+      if (e.key === 'Tab') {
+        if (e.shiftKey && document.activeElement === first) {
+          last.focus();
+          e.preventDefault();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          first.focus();
+          e.preventDefault();
+        }
+      }
+    }
+    
+    function confirmDelete() {
+      showToast('Elemento eliminado correctamente', 'success');
+      closeModal();
+    }
+
+    // ===== VALIDACIÓN DE FORMULARIO =====
+    function validateEmail(input) {
+      const errorDiv = document.getElementById('email-error');
+      const email = input.value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      
+      if (email && !emailRegex.test(email)) {
+        input.setAttribute('aria-invalid', 'true');
+        errorDiv.textContent = 'Por favor ingrese un correo electrónico válido';
+        errorDiv.hidden = false;
+      } else {
+        input.setAttribute('aria-invalid', 'false');
+        errorDiv.hidden = true;
+      }
+    }
+
+    // ===== TREE VIEW =====
+    function toggleTree(toggle) {
+      const treeitem = toggle.closest('[role="treeitem"]');
+      const group = treeitem.querySelector('[role="group"]');
+      const expanded = treeitem.getAttribute('aria-expanded') === 'true';
+      
+      treeitem.setAttribute('aria-expanded', !expanded);
+      toggle.textContent = expanded ? '▶' : '▼';
+      if (group) group.hidden = expanded;
+    }
+
+    // ===== TOGGLE BUTTONS =====
+    function toggleButton(button) {
+      const pressed = button.getAttribute('aria-pressed') === 'true';
+      button.setAttribute('aria-pressed', !pressed);
+      
+      const label = button.getAttribute('aria-label');
+      button.setAttribute('aria-label', label.includes('Activar') 
+        ? label.replace('Activar', 'Desactivar')
+        : label.replace('Desactivar', 'Activar'));
+    }
+
+    // ===== DROPDOWN MENU =====
+    function toggleMenu(button) {
+      const expanded = button.getAttribute('aria-expanded') === 'true';
+      const menu = button.nextElementSibling;
+      
+      button.setAttribute('aria-expanded', !expanded);
+      menu.hidden = expanded;
+      
+      if (!expanded) {
+        // Foco en el primer item
+        const firstItem = menu.querySelector('[role="menuitem"]');
+        if (firstItem) firstItem.focus();
+      }
+    }
+    
+    // Cerrar dropdown al hacer click fuera
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown [aria-expanded="true"]').forEach(btn => {
+          btn.setAttribute('aria-expanded', 'false');
+          btn.nextElementSibling.hidden = true;
+        });
+      }
+    });
+
+    // ===== SIMULACIÓN DE PROGRESO =====
+    function simulateProgress() {
+      const container = document.getElementById('simulated-progress-container');
+      container.innerHTML = `
+        <progress id="sim-progress" value="0" max="100" aria-label="Progreso de operación">
+          0%
+        </progress>
+        <span id="sim-text" aria-live="polite">0%</span>
+      `;
+      
+      let value = 0;
+      const interval = setInterval(() => {
+        value += 10;
+        const progress = document.getElementById('sim-progress');
+        const text = document.getElementById('sim-text');
+        
+        progress.value = value;
+        progress.textContent = value + '%';
+        text.textContent = value + '% completado';
+        
+        if (value >= 100) {
+          clearInterval(interval);
+          showToast('Operación completada', 'success');
+        }
+      }, 500);
+    }
+  </script>
+</body>
+</html>
