@@ -1,0 +1,113 @@
+<form action="/submit" method="POST" novalidate aria-labelledby="form-title">
+  <h2 id="form-title">Formulario de Contacto</h2>
+  
+  <fieldset>
+    <legend>Información Personal</legend>
+    
+    <div class="form-group">
+      <label for="nombre">
+        Nombre completo
+        <span aria-label="obligatorio">*</span>
+      </label>
+      <input 
+        type="text" 
+        id="nombre" 
+        name="nombre"
+        required
+        aria-required="true"
+        autocomplete="name"
+        aria-describedby="nombre-error"
+      >
+      <span id="nombre-error" class="error" role="alert"></span>
+    </div>
+    
+    <div class="form-group">
+      <label for="email">
+        Correo electrónico
+        <span aria-label="obligatorio">*</span>
+      </label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email"
+        required
+        aria-required="true"
+        autocomplete="email"
+        aria-describedby="email-help email-error"
+      >
+      <span id="email-help" class="help-text">Nunca compartiremos tu email.</span>
+      <span id="email-error" class="error" role="alert"></span>
+    </div>
+    
+    <div class="form-group">
+      <label for="telefono">Teléfono</label>
+      <input 
+        type="tel" 
+        id="telefono" 
+        name="telefono"
+        autocomplete="tel"
+        inputmode="tel"
+        pattern="[0-9]{9}"
+        aria-describedby="telefono-help"
+      >
+      <span id="telefono-help" class="help-text">Formato: 9 dígitos sin espacios</span>
+    </div>
+  </fieldset>
+  
+  <fieldset>
+    <legend>Motivo de contacto</legend>
+    
+    <div class="form-group">
+      <label for="asunto">Asunto</label>
+      <select id="asunto" name="asunto" required>
+        <option value="" disabled selected>Selecciona un asunto</option>
+        <option value="consulta">Consulta general</option>
+        <option value="soporte">Soporte técnico</option>
+        <option value="ventas">Ventas</option>
+        <option value="otro">Otro</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="mensaje">
+        Mensaje
+        <span aria-label="obligatorio">*</span>
+      </label>
+      <textarea 
+        id="mensaje" 
+        name="mensaje"
+        rows="5"
+        maxlength="500"
+        required
+        aria-required="true"
+        aria-describedby="mensaje-help mensaje-contador mensaje-error"
+      ></textarea>
+      <span id="mensaje-help" class="help-text">Cuéntanos en qué podemos ayudarte</span>
+      <span id="mensaje-contador" aria-live="polite">0 / 500 caracteres</span>
+      <span id="mensaje-error" class="error" role="alert"></span>
+    </div>
+  </fieldset>
+  
+  <fieldset>
+    <legend>Preferencias</legend>
+    
+    <div class="form-group">
+      <label>
+        <input type="checkbox" name="newsletter" value="1">
+        Quiero recibir el newsletter mensual
+      </label>
+    </div>
+    
+    <div class="form-group">
+      <label>
+        <input type="checkbox" name="privacidad" value="1" required>
+        Acepto la política de privacidad *
+      </label>
+    </div>
+  </fieldset>
+  
+  <div class="form-actions">
+    <button type="submit">Enviar mensaje</button>
+    <button type="reset">Limpiar formulario</button>
+  </div>
+</form>

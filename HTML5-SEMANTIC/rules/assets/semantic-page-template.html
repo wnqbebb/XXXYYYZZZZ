@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Descripción SEO de la página (150-160 caracteres)">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Título para redes sociales">
+  <meta property="og:description" content="Descripción para compartir">
+  <meta property="og:image" content="https://ejemplo.com/og-image.jpg">
+  <meta property="og:url" content="https://ejemplo.com/pagina">
+  <meta property="og:type" content="website">
+  
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Título para Twitter">
+  <meta name="twitter:description" content="Descripción para Twitter">
+  <meta name="twitter:image" content="https://ejemplo.com/twitter-image.jpg">
+  
+  <!-- Canonical -->
+  <link rel="canonical" href="https://ejemplo.com/pagina">
+  
+  <title>Título de la Página - Nombre del Sitio</title>
+  
+  <style>
+    /* Skip link */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: #000;
+      color: #fff;
+      padding: 8px 16px;
+      z-index: 100;
+      text-decoration: none;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+    
+    /* Focus visible */
+    *:focus-visible {
+      outline: 3px solid #0066cc;
+      outline-offset: 2px;
+    }
+    
+    /* Screen reader only */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Skip Link -->
+  <a href="#main-content" class="skip-link">
+    Saltar al contenido principal
+  </a>
+  
+  <!-- Header -->
+  <header role="banner">
+    <div class="logo">
+      <a href="/" aria-label="Inicio - Nombre del Sitio">
+        <img src="/logo.svg" alt="" width="150" height="40">
+        <span class="sr-only">Nombre del Sitio</span>
+      </a>
+    </div>
+    
+    <!-- Navegación Principal -->
+    <nav role="navigation" aria-label="Principal">
+      <ul>
+        <li><a href="/" aria-current="page">Inicio</a></li>
+        <li><a href="/servicios">Servicios</a></li>
+        <li><a href="/nosotros">Nosotros</a></li>
+        <li><a href="/contacto">Contacto</a></li>
+      </ul>
+    </nav>
+    
+    <!-- Búsqueda -->
+    <search role="search">
+      <form action="/buscar" method="GET">
+        <label for="search-input" class="sr-only">Buscar</label>
+        <input 
+          type="search" 
+          id="search-input" 
+          name="q"
+          placeholder="Buscar..."
+          aria-label="Buscar en el sitio"
+        >
+        <button type="submit">
+          <span aria-hidden="true">🔍</span>
+          <span class="sr-only">Buscar</span>
+        </button>
+      </form>
+    </search>
+  </header>
+  
+  <!-- Breadcrumb -->
+  <nav aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/">Inicio</a></li>
+      <li aria-current="page">Página Actual</li>
+    </ol>
+  </nav>
+  
+  <!-- Contenido Principal -->
+  <main id="main-content" tabindex="-1">
+    <article>
+      <header>
+        <h1>Título Principal de la Página</h1>
+        <p class="lead">Descripción o resumen del contenido principal.</p>
+        
+        <div class="meta">
+          <time datetime="2024-01-15">15 de enero, 2024</time>
+          <span>Por <a href="/autor/nombre">Nombre Autor</a></span>
+        </div>
+      </header>
+      
+      <section aria-labelledby="section-1">
+        <h2 id="section-1">Primera Sección</h2>
+        <p>Contenido de la primera sección...</p>
+        
+        <figure>
+          <img 
+            src="imagen.jpg" 
+            alt="Descripción detallada de la imagen"
+            width="800"
+            height="450"
+            loading="lazy"
+          >
+          <figcaption>Pie de foto descriptivo de la imagen</figcaption>
+        </figure>
+      </section>
+      
+      <section aria-labelledby="section-2">
+        <h2 id="section-2">Segunda Sección</h2>
+        <p>Contenido de la segunda sección...</p>
+      </section>
+    </article>
+  </main>
+  
+  <!-- Sidebar / Contenido Relacionado -->
+  <aside aria-label="Contenido relacionado">
+    <section>
+      <h2>Artículos Relacionados</h2>
+      <ul>
+        <li><a href="/articulo-1">Artículo relacionado 1</a></li>
+        <li><a href="/articulo-2">Artículo relacionado 2</a></li>
+      </ul>
+    </section>
+  </aside>
+  
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="footer-sections">
+      <section aria-labelledby="footer-contact">
+        <h2 id="footer-contact">Contacto</h2>
+        <address>
+          <p>Email: <a href="mailto:contacto@ejemplo.com">contacto@ejemplo.com</a></p>
+          <p>Tel: <a href="tel:+34123456789">+34 123 456 789</a></p>
+        </address>
+      </section>
+      
+      <section aria-labelledby="footer-social">
+        <h2 id="footer-social">Redes Sociales</h2>
+        <ul>
+          <li><a href="https://twitter.com/ejemplo" rel="noopener noreferrer">Twitter</a></li>
+          <li><a href="https://linkedin.com/company/ejemplo" rel="noopener noreferrer">LinkedIn</a></li>
+        </ul>
+      </section>
+    </div>
+    
+    <p>&copy; 2024 Nombre del Sitio. Todos los derechos reservados.</p>
+  </footer>
+  
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "headline": "Título de la Página",
+    "description": "Descripción SEO de la página",
+    "url": "https://ejemplo.com/pagina",
+    "datePublished": "2024-01-15",
+    "dateModified": "2024-01-15",
+    "author": {
+      "@type": "Person",
+      "name": "Nombre Autor"
+    }
+  }
+  </script>
+</body>
+</html>

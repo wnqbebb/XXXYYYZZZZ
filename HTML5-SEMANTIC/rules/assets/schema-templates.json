@@ -1,0 +1,118 @@
+{
+  "templates": {
+    "article": {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Título del Artículo",
+      "description": "Descripción del artículo",
+      "image": "https://ejemplo.com/imagen.jpg",
+      "datePublished": "2024-01-15",
+      "dateModified": "2024-01-15",
+      "author": {
+        "@type": "Person",
+        "name": "Nombre Autor",
+        "url": "https://ejemplo.com/autor"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Nombre Editorial",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://ejemplo.com/logo.png"
+        }
+      }
+    },
+    
+    "product": {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "Nombre del Producto",
+      "description": "Descripción del producto",
+      "image": "https://ejemplo.com/producto.jpg",
+      "brand": {
+        "@type": "Brand",
+        "name": "Marca"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "https://ejemplo.com/producto",
+        "price": "29.99",
+        "priceCurrency": "EUR",
+        "priceValidUntil": "2024-12-31",
+        "availability": "https://schema.org/InStock",
+        "itemCondition": "https://schema.org/NewCondition"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.5",
+        "reviewCount": "128"
+      }
+    },
+    
+    "organization": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Nombre Empresa",
+      "url": "https://ejemplo.com",
+      "logo": "https://ejemplo.com/logo.png",
+      "description": "Descripción de la empresa",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+34-123-456-789",
+        "contactType": "customer service",
+        "availableLanguage": ["Spanish", "English"]
+      },
+      "sameAs": [
+        "https://facebook.com/empresa",
+        "https://twitter.com/empresa",
+        "https://linkedin.com/company/empresa"
+      ]
+    },
+    
+    "localBusiness": {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Nombre del Negocio",
+      "image": "https://ejemplo.com/local.jpg",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Calle Principal 123",
+        "addressLocality": "Madrid",
+        "addressRegion": "Madrid",
+        "postalCode": "28001",
+        "addressCountry": "ES"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "40.4168",
+        "longitude": "-3.7038"
+      },
+      "telephone": "+34-123-456-789",
+      "openingHours": "Mo-Fr 09:00-18:00"
+    },
+    
+    "breadcrumb": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://ejemplo.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Categoría",
+          "item": "https://ejemplo.com/categoria"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Página Actual"
+        }
+      ]
+    }
+  }
+}

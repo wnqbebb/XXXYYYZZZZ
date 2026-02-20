@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Descripción de la página para SEO">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Título de la Página">
+  <meta property="og:description" content="Descripción para redes sociales">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ejemplo.com/pagina">
+  <meta property="og:image" content="https://ejemplo.com/imagen.jpg">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Título de la Página">
+  <meta name="twitter:description" content="Descripción para Twitter">
+  <meta name="twitter:image" content="https://ejemplo.com/imagen.jpg">
+  
+  <title>Título de la Página - Nombre del Sitio</title>
+  
+  <style>
+    /* Skip Link */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: #000;
+      color: #fff;
+      padding: 8px;
+      text-decoration: none;
+      z-index: 100;
+    }
+    
+    .skip-link:focus {
+      top: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Skip Link para accesibilidad -->
+  <a href="#main-content" class="skip-link">
+    Saltar al contenido principal
+  </a>
+  
+  <!-- Cabecera -->
+  <header>
+    <div class="logo">
+      <a href="/" aria-label="Inicio - Nombre del Sitio">
+        <img src="/logo.svg" alt="Logo" width="150" height="50">
+      </a>
+    </div>
+    
+    <!-- Navegación principal -->
+    <nav aria-label="Principal">
+      <ul>
+        <li><a href="/" aria-current="page">Inicio</a></li>
+        <li><a href="/servicios">Servicios</a></li>
+        <li><a href="/nosotros">Nosotros</a></li>
+        <li><a href="/contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <!-- Contenido principal -->
+  <main id="main-content">
+    <article>
+      <header>
+        <h1>Título Principal de la Página</h1>
+        <p class="lead">Descripción o resumen del contenido</p>
+      </header>
+      
+      <section aria-labelledby="section-1">
+        <h2 id="section-1">Primera Sección</h2>
+        <p>Contenido de la primera sección...</p>
+      </section>
+      
+      <section aria-labelledby="section-2">
+        <h2 id="section-2">Segunda Sección</h2>
+        <p>Contenido de la segunda sección...</p>
+      </section>
+    </article>
+  </main>
+  
+  <!-- Contenido complementario -->
+  <aside aria-label="Artículos relacionados">
+    <h2>Artículos Relacionados</h2>
+    <ul>
+      <li><a href="/articulo-1">Artículo relacionado 1</a></li>
+      <li><a href="/articulo-2">Artículo relacionado 2</a></li>
+    </ul>
+  </aside>
+  
+  <!-- Pie de página -->
+  <footer>
+    <nav aria-label="Legal">
+      <ul>
+        <li><a href="/privacidad">Política de Privacidad</a></li>
+        <li><a href="/terminos">Términos de Uso</a></li>
+      </ul>
+    </nav>
+    <p>&copy; 2026 Nombre del Sitio. Todos los derechos reservados.</p>
+  </footer>
+</body>
+</html>
