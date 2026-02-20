@@ -1,0 +1,324 @@
+/**
+ * SplitType Base Styles
+ * 
+ * Estilos CSS base recomendados para trabajar con SplitType.
+ * Importar estos estilos en tu proyecto para un comportamiento óptimo.
+ * 
+ * @usage
+ * ```css
+ * @import './base-styles.css';
+ * ```
+ */
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
+/* Previene desplazamientos al dividir/revertir */
+.split-text,
+[data-split-text] {
+  font-kerning: none;
+}
+
+/* Elementos divididos por SplitType */
+.split-text .line,
+.split-text .word,
+.split-text .char,
+[data-split-text] .line,
+[data-split-text] .word,
+[data-split-text] .char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* Líneas específicas */
+.split-text .line,
+[data-split-text] .line {
+  display: block;
+  width: 100%;
+}
+
+/* Palabras */
+.split-text .word,
+[data-split-text] .word {
+  position: relative;
+}
+
+/* Caracteres - GPU acceleration */
+.split-text .char,
+[data-split-text] .char {
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  transform: translateZ(0);
+}
+
+/* ========================================
+   POSITION MODES
+   ======================================== */
+
+/* Relative position (default) */
+.split-text[data-position="relative"] .word,
+.split-text[data-position="relative"] .char {
+  position: relative;
+}
+
+/* Absolute position */
+.split-text[data-position="absolute"] .word,
+.split-text[data-position="absolute"] .char {
+  position: absolute;
+}
+
+/* ========================================
+   ANIMATION STATES
+   ======================================== */
+
+/* Ocultar inicialmente para animaciones */
+.split-text[data-animate="true"] .char,
+.split-text[data-animate="true"] .word,
+.split-text[data-animate="true"] .line {
+  opacity: 0;
+}
+
+/* Ready state */
+.split-text.is-ready,
+[data-split-text].is-ready {
+  visibility: visible;
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .split-text .line,
+  .split-text .word,
+  .split-text .char,
+  [data-split-text] .line,
+  [data-split-text] .word,
+  [data-split-text] .char {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  
+  .split-text[data-animate="true"] .char,
+  .split-text[data-animate="true"] .word,
+  .split-text[data-animate="true"] .line {
+    opacity: 1 !important;
+  }
+}
+
+/* Focus visible */
+.split-text:focus-visible,
+[data-split-text]:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+/* ========================================
+   CONTAINMENT (Performance)
+   ======================================== */
+
+/* Aislar área de animación */
+.split-text-container,
+[data-split-container] {
+  contain: layout style paint;
+}
+
+/* Containment estricto (cuando sea seguro) */
+.split-text-container.strict,
+[data-split-container="strict"] {
+  contain: strict;
+}
+
+/* ========================================
+   FLEX CONTAINER FIXES
+   ======================================== */
+
+/* Si el elemento está en un flex container, definir width */
+.flex-container .split-text,
+.flex-container [data-split-text] {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Grid container fixes */
+.grid-container .split-text,
+.grid-container [data-split-text] {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+/* ========================================
+   COMMON ANIMATION PRESETS
+   ======================================== */
+
+/* Fade Up */
+@keyframes split-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade Down */
+@keyframes split-fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scale In */
+@keyframes split-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Rotate X */
+@keyframes split-rotate-x {
+  from {
+    opacity: 0;
+    transform: rotateX(-90deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotateX(0);
+  }
+}
+
+/* Blur Reveal */
+@keyframes split-blur-reveal {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Clip Reveal */
+@keyframes split-clip-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+/* Ocultar texto hasta que esté listo */
+.split-text-hidden {
+  visibility: hidden;
+}
+
+.split-text-hidden.is-ready {
+  visibility: visible;
+}
+
+/* Prevenir selección durante animación */
+.split-text-no-select {
+  user-select: none;
+}
+
+/* Cursor pointer para elementos interactivos */
+.split-text-interactive .char,
+.split-text-interactive .word {
+  cursor: pointer;
+}
+
+/* ========================================
+   COMPONENT-SPECIFIC STYLES
+   ======================================== */
+
+/* Typewriter cursor */
+.typewriter-cursor {
+  display: inline-block;
+  animation: cursor-blink 1s step-end infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Character stagger hover effect */
+.character-stagger .char {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.character-stagger .char:hover {
+  transform: translateY(-5px);
+}
+
+/* Word reveal overflow */
+.word-reveal {
+  overflow: hidden;
+}
+
+.word-reveal .word {
+  display: inline-block;
+}
+
+/* Line reveal overflow wrapper */
+.line-reveal-wrapper {
+  overflow: hidden;
+  display: block;
+}
+
+/* ========================================
+   DEBUG STYLES
+   ======================================== */
+
+/* Debug mode - visualizar elementos divididos */
+[data-split-debug="true"] .line {
+  outline: 1px solid red;
+}
+
+[data-split-debug="true"] .word {
+  outline: 1px solid blue;
+}
+
+[data-split-debug="true"] .char {
+  outline: 1px solid green;
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+  .split-text .line,
+  .split-text .word,
+  .split-text .char,
+  [data-split-text] .line,
+  [data-split-text] .word,
+  [data-split-text] .char {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
